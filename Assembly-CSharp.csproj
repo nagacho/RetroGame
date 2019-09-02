@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Board.cs" />
     <Compile Include="Assets\Scripts\Bullets.cs" />
     <Compile Include="Assets\Scripts\Piece.cs" />
+    <Compile Include="Assets\Scripts\Score.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/nacho/Desktop/レトロ/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

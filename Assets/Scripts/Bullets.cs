@@ -5,6 +5,11 @@ using UnityEngine;
 public class Bullets : MonoBehaviour
 {
     private int kind;
+    public int Kind
+    {
+        get { return kind; }
+        set { kind = value; }
+    }
     private float speed;
     private bool isShot;
 
@@ -35,8 +40,8 @@ public class Bullets : MonoBehaviour
             isShot = true;
         }
 
-        // 当たった時元に戻る
-        if(transform.position.y >= 5.0f)
+        // 上限制御
+        if (transform.position.y > 7.8f)
         {
             isShot = false;
             transform.position = new Vector3(transform.position.x, -3.0f, transform.position.z);
@@ -71,7 +76,8 @@ public class Bullets : MonoBehaviour
             ChangeBullet(kind);
 
         }
-        
+
+
     }
 
     //
@@ -111,6 +117,18 @@ public class Bullets : MonoBehaviour
     {
         Vector3 pos = transform.position;
         transform.position = new Vector3(pos.x + x, pos.y + y, pos.z);
+
+        // 左右制御
+        if(transform.position.x > 3.9f || transform.position.x < -2.6f)
+        {
+            transform.position = pos;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        isShot = false;
+        transform.position = new Vector3(transform.position.x, -3.0f, transform.position.z);
     }
 
 }
