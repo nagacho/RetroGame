@@ -1,16 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
+    [SerializeField] public GameObject mTapEffect;
     [SerializeField] public GameObject[] PieceData;
     [SerializeField] public GameObject Bullet;
     [SerializeField] public GameObject Score;
     [SerializeField] public GameObject GameOverLine;
+    [SerializeField] public GameObject Level;
     private Vector3[] birthPos;
     private int MaxPieces = 60;
-    private float interbal = 5.0f;
+    private float interbal;
+    private int tempo;
+    private float interbalCounter;
     private GameObject[] Pieces;
     private bool[] isPieces;
     private int[] kind;
@@ -23,6 +28,9 @@ public class Board : MonoBehaviour
         isPieces = new bool[MaxPieces];
         kind = new int[MaxPieces];
         birthPos = new Vector3[6];
+        tempo = 1;
+        interbal = 8.0f;
+        interbalCounter = interbal;
         for(int i = 0; i < 6; i++)
         {
             birthPos[i] = new Vector3(-2.6f + (1.3f * i), 7.8f, 0.0f);
@@ -50,13 +58,13 @@ public class Board : MonoBehaviour
         // ゲームオーバー時更新を停止
         if(GameOverLine.GetComponent<GameOverLine>().IsDeadLine){ return; }
 
-        interbal -= Time.deltaTime;
+        interbalCounter -= Time.deltaTime;
 
         // パズルの移動と生成をする
-        if (interbal <= 0.0f)
+        if (interbalCounter <= 0.0f)
         {
             int birth = 0;
-            interbal = 5.0f;
+            interbalCounter = interbal;
             for (int i = 0; i < MaxPieces; i++)
             {
                 if (isPieces[i])
@@ -87,8 +95,12 @@ public class Board : MonoBehaviour
                     {
                         // スコア加算
                         Score.GetComponent<Score>().ScoreNum += 10;
+
                         // 役に追加
+
                         // 削除
+                        Object.Instantiate(mTapEffect, Pieces[i].transform.position, Quaternion.identity);
+
                         Destroy(Pieces[i]);
                         isPieces[i] = false;
                         kind[i] = -1;
@@ -100,6 +112,24 @@ public class Board : MonoBehaviour
                 }
             }
         }
+
+        // テンポを早く
+        if(Score.GetComponent<Score>().ScoreNum >= (120 * tempo))
+        {
+            if(tempo > 9) { return; }
+            tempo++;
+            interbal -= 0.5f;
+        }
+
+        if (tempo >= 9)
+        {
+            Level.GetComponent<Text>().text = "Level  Max";
+        }
+        else
+        {
+            Level.GetComponent<Text>().text = "Level  " + tempo;
+        }
+
     }
 
     public void Release()
@@ -120,6 +150,10 @@ public class Board : MonoBehaviour
             Pieces[i] = Instantiate(PieceData[number], birthPos[i], Quaternion.identity);
             isPieces[i] = true;
             kind[i] = number;
+            tempo = 1;
+            interbal = 8.0f;
+            interbalCounter = interbal;
+            Level.GetComponent<Text>().text = "Level  " + tempo;
         }
     }
 

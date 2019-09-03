@@ -67,7 +67,10 @@
     <Compile Include="Assets\Scripts\GameOver.cs" />
     <Compile Include="Assets\Scripts\GameOverLine.cs" />
     <Compile Include="Assets\Scripts\Piece.cs" />
+    <Compile Include="Assets\Scripts\PlayTouchPanel.cs" />
     <Compile Include="Assets\Scripts\Score.cs" />
+    <Compile Include="Assets\Scripts\TapCircle.cs" />
+    <None Include="Assets\Shader\Ripple.shader.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/naga-/Desktop/RetroGame/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

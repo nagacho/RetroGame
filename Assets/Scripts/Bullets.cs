@@ -71,7 +71,7 @@ public class Bullets : MonoBehaviour
         }
 
         // タイプチェンジ
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             kind++;
             if(kind % 6 == 0)
