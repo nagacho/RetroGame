@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Bullets : MonoBehaviour
 {
+    [SerializeField] public GameObject GameOverLine;
+
     private int kind;
     public int Kind
     {
@@ -34,6 +36,9 @@ public class Bullets : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ゲームオーバー時更新を停止
+        if (GameOverLine.GetComponent<GameOverLine>().IsDeadLine) { return; }
+
         // 弾発射
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -44,7 +49,7 @@ public class Bullets : MonoBehaviour
         if (transform.position.y > 7.8f)
         {
             isShot = false;
-            transform.position = new Vector3(transform.position.x, -3.0f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, -3.9f, transform.position.z);
         }
 
         if (isShot)
@@ -125,10 +130,23 @@ public class Bullets : MonoBehaviour
         }
     }
 
+    //
+    // 弾を元に戻す
+    //
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.CompareTag("GameOverLine")) { return; }
         isShot = false;
-        transform.position = new Vector3(transform.position.x, -3.0f, transform.position.z);
+        transform.position = new Vector3(transform.position.x, -3.9f, transform.position.z);
+    }
+
+    public void Initialize()
+    {
+        MainSpriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        kind = 0;
+        isShot = false;
+        ChangeBullet(kind);
+        transform.position = new Vector3(transform.position.x, -3.9f, transform.position.z);
     }
 
 }

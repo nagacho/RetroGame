@@ -7,9 +7,10 @@ public class Board : MonoBehaviour
     [SerializeField] public GameObject[] PieceData;
     [SerializeField] public GameObject Bullet;
     [SerializeField] public GameObject Score;
+    [SerializeField] public GameObject GameOverLine;
     private Vector3[] birthPos;
     private int MaxPieces = 60;
-    private float interbal = 10.0f;
+    private float interbal = 5.0f;
     private GameObject[] Pieces;
     private bool[] isPieces;
     private int[] kind;
@@ -46,13 +47,16 @@ public class Board : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // ゲームオーバー時更新を停止
+        if(GameOverLine.GetComponent<GameOverLine>().IsDeadLine){ return; }
+
         interbal -= Time.deltaTime;
 
         // パズルの移動と生成をする
         if (interbal <= 0.0f)
         {
             int birth = 0;
-            interbal = 10.0f;
+            interbal = 5.0f;
             for (int i = 0; i < MaxPieces; i++)
             {
                 if (isPieces[i])
@@ -95,6 +99,27 @@ public class Board : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public void Release()
+    {
+        for (int i = 0; i < MaxPieces; i++)
+        {
+            Destroy(Pieces[i]);
+            isPieces[i] = false;
+            kind[i] = -1;
+        }
+    }
+
+    public void Initialize()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            int number = Random.Range(0, 6);
+            Pieces[i] = Instantiate(PieceData[number], birthPos[i], Quaternion.identity);
+            isPieces[i] = true;
+            kind[i] = number;
         }
     }
 

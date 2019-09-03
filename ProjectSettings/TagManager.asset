@@ -10,6 +10,8 @@ TagManager:
   - Four
   - Five
   - Six
+  - GameOverLine
+  - Bullets
   layers:
   - Default
   - TransparentFX
